@@ -9,22 +9,22 @@ export async function POST(request: Request) {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),
-      secure: true,
+      secure: process.env.SMTP_SECURE === 'true',
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
       },
     });
 
     // お客様への送信完了メール
     const customerMailOptions = {
-      from: process.env.SMTP_USER,
+      from: process.env.EMAIL_USER,
       to: email,
       subject: '【INSPIRE Japan】お問い合わせありがとうございます',
       text: `
 ${name} 様
 
-この度は、INSPIRE Japanにお問い合わせいただき、誠にありがとうございます。
+この度は、INSPIRE Japan株式会社にお問い合わせいただき、誠にありがとうございます。
 以下の内容でお問い合わせを承りました。
 
 【お問い合わせ内容】
@@ -36,7 +36,7 @@ ${name} 様
 ${message}
 
 担当者より、2営業日以内にご連絡させていただきます。
-今しばらくお待ちくださいませ。
+今しばらくお待ちください。
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
 INSPIRE Japan株式会社
@@ -50,9 +50,9 @@ TEL: 0120-488-895
 
     // 事業者への通知メール
     const adminMailOptions = {
-      from: process.env.SMTP_USER,
-      to: process.env.ADMIN_EMAIL,
-      subject: '【INSPIRE Japan】新規お問い合わせがありました',
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: '【遮熱LP】新規お問い合わせがありました',
       text: `
 新規お問い合わせがありました。
 
@@ -82,7 +82,7 @@ TEL: 0120-488-895
   } catch (error) {
     console.error('Error sending email:', error);
     return NextResponse.json(
-      { error: 'メールの送信に失敗しました' },
+      { error: error instanceof Error ? error.message : 'メールの送信に失敗しました' },
       { status: 500 }
     );
   }

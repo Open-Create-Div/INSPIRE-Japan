@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface ConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => Promise<void>;
+  onConfirm: () => Promise<boolean>;
   formData: {
     name: string;
     email: string;
@@ -13,6 +13,7 @@ interface ConfirmationModalProps {
     address: string;
     message: string;
   };
+  onFormReset: () => void;
 }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
@@ -20,28 +21,31 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   onClose,
   onConfirm,
   formData,
+  onFormReset,
 }) => {
-  const [isSubmitted, setIsSubmitted] = React.useState(false);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [lastFormData, setLastFormData] = React.useState(formData);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // フォームデータが変更されたら送信完了状態をリセット
+  // モーダルが開かれた時に状態をリセット
   useEffect(() => {
-    if (JSON.stringify(formData) !== JSON.stringify(lastFormData)) {
+    if (isOpen) {
       setIsSubmitted(false);
-      setLastFormData(formData);
+      setIsSubmitting(false);
     }
-  }, [formData, lastFormData]);
+  }, [isOpen]);
 
   const handleConfirm = async () => {
     try {
       setIsSubmitting(true);
-      // デモ用に2秒待機
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setIsSubmitted(true);
+      const success = await onConfirm();
+      
+      if (success) {
+        setIsSubmitted(true);
+        onFormReset();
+      }
     } catch (error) {
       console.error('送信に失敗しました:', error);
-      onClose();
+      alert('送信に失敗しました。もう一度お試しください。');
     } finally {
       setIsSubmitting(false);
     }

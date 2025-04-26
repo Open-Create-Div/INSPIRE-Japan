@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #ffffff;
@@ -48,13 +50,11 @@ body {
       rgba(255,255,255,0) 100%
     );
     transform: skewX(-25deg);
-    animation: shine-move 1.5s ease-in-out infinite;
-    z-index: 2;
-    pointer-events: none;
+    animation: shine-move 2s infinite;
   }
   @keyframes shine-move {
     0% { left: -100%; }
-    100% { left: 150%; }
+    100% { left: 200%; }
   }
 
   .gradient-orange {

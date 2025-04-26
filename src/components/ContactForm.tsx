@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { PhoneIcon, UserIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import ConfirmationModal from './ConfirmationModal';
 
-const ContactForm: React.FC = () => {
+export interface ContactFormRef {
+  submitForm: () => Promise<void>;
+}
+
+const ContactForm = forwardRef<ContactFormRef>((props, ref) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,6 +23,12 @@ const ContactForm: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    submitForm: async () => {
+      await handleSubmit(new Event('submit') as any);
+    }
+  }));
 
   const validateEmail = async (email: string) => {
     try {
@@ -106,6 +115,7 @@ const ContactForm: React.FC = () => {
 
   const handleConfirm = async () => {
     try {
+      console.log('メール送信開始');
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -114,24 +124,34 @@ const ContactForm: React.FC = () => {
         body: JSON.stringify(formData),
       });
 
+      console.log('メール送信レスポンス:', response.status);
+      const data = await response.json();
+      console.log('メール送信レスポンスデータ:', data);
+
       if (!response.ok) {
+        throw new Error(data.error || '送信に失敗しました');
+      }
+
+      if (!data.success) {
         throw new Error('送信に失敗しました');
       }
 
-      // 送信成功後、フォームをリセット
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        address: '',
-        message: ''
-      });
-      // モーダルは閉じない（ConfirmationModalコンポーネントで完了画面を表示）
+      console.log('メール送信成功');
+      return true;
     } catch (error) {
+      console.error('メール送信に失敗しました:', error);
       alert('送信に失敗しました。\n時間をおいて再度お試しください。');
       setIsModalOpen(false);
+      return false;
     }
   };
+
+  // モーダルの状態変更を監視
+  useEffect(() => {
+    if (isModalOpen) {
+      console.log('モーダルが開きました');
+    }
+  }, [isModalOpen]);
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -235,9 +255,18 @@ const ContactForm: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirm}
         formData={formData}
+        onFormReset={() => {
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            address: '',
+            message: ''
+          });
+        }}
       />
     </div>
   );
-};
+});
 
 export default ContactForm; 

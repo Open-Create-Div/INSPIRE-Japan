@@ -1,7 +1,10 @@
+"use client";
+
 import React from 'react';
 import Image from 'next/image';
 import { Noto_Sans_JP } from 'next/font/google'
-import ContactForm from '@/components/ContactForm';
+import ContactForm, { ContactFormRef } from '@/components/ContactForm';
+import SubmitButton from '@/components/SubmitButton';
 
 const notoSansJP = Noto_Sans_JP({
   weight: ['400', '500', '700'],
@@ -11,6 +14,13 @@ const notoSansJP = Noto_Sans_JP({
 })
 
 export default function Home() {
+  const formRef = React.useRef<ContactFormRef>(null);
+  const contactFormRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToContactForm = () => {
+    contactFormRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen">
       {/* ヘッダーセクション */}
@@ -18,8 +28,9 @@ export default function Home() {
         <div className="container mx-auto flex flex-row items-center justify-between pl-0 pr-1 xs:pl-0 xs:pr-2 sm:pl-1 sm:pr-3 md:px-4 scale-[0.82] xs:scale-[0.85] sm:scale-90 md:scale-95 lg:scale-100 gap-1 xs:gap-1.5 sm:gap-2 md:gap-3">
           {/* ロゴ・会社名（常に表示） */}
           <div className="flex flex-col items-center">
-            <span className="text-[10px] xs:text-xs sm:text-sm md:text-sm whitespace-nowrap text-gray-700 hidden sm:block">遮熱フィルムの貼付なら</span>
-            </div>
+            <span className="text-[10px] xs:text-xs sm:text-sm md:text-sm whitespace-nowrap text-gray-700">遮熱フィルムの貼付なら</span>
+            <Image src="/images/logo.webp" alt="NH本舗" width={120} height={40} className="w-24 xs:w-28 sm:w-32 md:w-36 h-auto" />
+          </div>
 
           {/* 決済手段アイコン＋ラベル */}
           <div className="hidden lg:flex flex-col items-center">
@@ -58,8 +69,7 @@ export default function Home() {
 
           {/* 相談ボタン */}
           <div className="flex flex-row items-center gap-1 xs:gap-2 sm:gap-3">
-            <a href="https://nhhonpo.com/transfer/#wonder_efblock" target="_blank" rel="noopener noreferrer" 
-               className="bg-gradient-to-b from-[#4DB5E8] via-[#00A0E9] to-[#0090D9] text-white px-2 xs:px-3 sm:px-4 py-1 xs:py-2 rounded font-bold flex flex-col items-center w-[130px] xs:w-[150px] sm:w-[170px] shine-effect transform hover:scale-105 transition-all duration-300 hover:brightness-110">
+            <button onClick={scrollToContactForm} className="bg-gradient-to-b from-[#4DB5E8] via-[#00A0E9] to-[#0090D9] text-white px-2 xs:px-3 sm:px-4 py-1 xs:py-2 rounded font-bold flex flex-col items-center w-[130px] xs:w-[150px] sm:w-[170px] shine-effect transform hover:scale-105 transition-all duration-300 hover:brightness-110">
               <div className="flex items-center gap-1 xs:gap-2 w-full">
                 <span className="text-lg xs:text-xl sm:text-2xl -ml-1.5">✉</span>
                 <div className="flex flex-col items-start flex-1">
@@ -70,7 +80,7 @@ export default function Home() {
                   <span className="text-[8px] xs:text-[10px] sm:text-xs whitespace-nowrap text-center w-full">24時間受付</span>
                 </div>
               </div>
-            </a>
+            </button>
             <a href="https://lin.ee/xOGQHrD" target="_blank" rel="noopener noreferrer" 
                className="bg-gradient-to-b from-green-400 via-green-500 to-green-600 text-white px-2 xs:px-3 sm:px-4 py-1 xs:py-2 rounded font-bold flex flex-col items-center w-[135px] xs:w-[155px] sm:w-[175px] shine-effect transform hover:scale-105 transition-all duration-300 hover:brightness-110">
               <div className="flex items-center gap-1 xs:gap-2 w-full">
@@ -97,20 +107,20 @@ export default function Home() {
             alt="ガラスフィルム施工の様子"
             width={1920}
             height={1080}
-            className="w-full h-full object-cover"
+            className="w-full h-auto"
           priority
         />
         </div>
         {/* スマホ（SP）版 */}
         <div className="block sm:hidden w-full">
-        <Image
+          <Image
             src="/images/first-sp.webp"
             alt="ガラスフィルム施工の様子"
             width={800}
-            height={800}
-            className="w-full h-auto object-cover"
-          priority
-        />
+            height={1200}
+            className="w-full h-auto"
+            priority
+          />
         </div>
       </div>
 
@@ -126,7 +136,7 @@ export default function Home() {
             {/* 左側：クマのキャラクター */}
             <div className="w-[200px] flex-shrink-0">
               <Image
-                src="/images/nayami.png"
+                src="/images/nayami.webp"
                 alt="お悩みアイコン"
                 width={200}
                 height={200}
@@ -138,7 +148,7 @@ export default function Home() {
               <ul className="space-y-8">
                 <li className="flex items-center border-b border-dashed border-gray-300 pb-6">
                   <Image
-                    src="/images/10002.png"
+                    src="/images/10002.webp"
                     alt="チェックアイコン"
                     width={32}
                     height={32}
@@ -148,7 +158,7 @@ export default function Home() {
           </li>
                 <li className="flex items-center border-b border-dashed border-gray-300 pb-6">
                   <Image
-                    src="/images/10002.png"
+                    src="/images/10002.webp"
                     alt="チェックアイコン"
                     width={32}
                     height={32}
@@ -158,7 +168,7 @@ export default function Home() {
           </li>
                 <li className="flex items-center border-b border-dashed border-gray-300 pb-6">
                   <Image
-                    src="/images/10002.png"
+                    src="/images/10002.webp"
                     alt="チェックアイコン"
                     width={32}
                     height={32}
@@ -168,7 +178,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-center border-b border-dashed border-gray-300 pb-6">
                   <Image
-                    src="/images/10002.png"
+                    src="/images/10002.webp"
                     alt="チェックアイコン"
                     width={32}
                     height={32}
@@ -178,7 +188,7 @@ export default function Home() {
           </li>
                 <li className="flex items-center border-b border-dashed border-gray-300 pb-6">
                   <Image
-                    src="/images/10002.png"
+                    src="/images/10002.webp"
                     alt="チェックアイコン"
                     width={32}
                     height={32}
@@ -212,7 +222,7 @@ export default function Home() {
               <div className="flex flex-col items-center">
                 <div className="w-[160px] h-[160px] relative mb-4">
             <Image
-                    src="/images/r1.png"
+                    src="/images/r1.webp"
                     alt="自社施工なので低価格"
                     fill
                     className="object-contain"
@@ -231,7 +241,7 @@ export default function Home() {
               <div className="flex flex-col items-center">
                 <div className="w-[160px] h-[160px] relative mb-4">
                   <Image
-                    src="/images/r2.png"
+                    src="/images/r2.webp"
                     alt="施工実績年間180件超え"
                     fill
                     className="object-contain"
@@ -250,7 +260,7 @@ export default function Home() {
               <div className="flex flex-col items-center">
                 <div className="w-[160px] h-[160px] relative mb-4">
                   <Image
-                    src="/images/r3.png"
+                    src="/images/r3.webp"
                     alt="施工完了後3~5年保証付"
                     fill
                     className="object-contain"
@@ -269,7 +279,7 @@ export default function Home() {
               <div className="flex flex-col items-center">
                 <div className="w-[160px] h-[160px] relative mb-4">
                   <Image
-                    src="/images/r4.png"
+                    src="/images/r4.webp"
                     alt="お見積り後のキャンセル無料"
                     fill
                     className="object-contain"
@@ -288,7 +298,7 @@ export default function Home() {
               <div className="flex flex-col items-center">
                 <div className="w-[160px] h-[160px] relative mb-4">
                   <Image
-                    src="/images/r5.png"
+                    src="/images/r5.webp"
                     alt="施工後もアドバイス"
                     fill
                     className="object-contain"
@@ -320,7 +330,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
                 <span className="text-[#00A0E9] text-xl sm:text-2xl md:text-3xl font-bold">遮熱フィルムの貼付なら</span>
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.webp"
                   alt="INSPIRE Japan"
                   width={200}
                   height={50}
@@ -334,7 +344,7 @@ export default function Home() {
               <div className="flex items-center">
                 <div className="relative w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] md:w-[160px] md:h-[160px]">
                   <Image
-                    src="/images/cta.png"
+                    src="/images/cta.webp"
                     alt="パンダのキャラクター"
                     fill
                     className="object-contain scale-x-[-1]"
@@ -342,7 +352,7 @@ export default function Home() {
                 </div>
                 <div className="relative ml-2">
                   <div className="absolute left-[-20px] top-1/2 w-0 h-0 border-t-[10px] border-r-[20px] border-b-[10px] border-t-transparent border-r-[#00A0E9] border-b-transparent transform -translate-y-1/2"></div>
-                  <div className="bg-[#00A0E9] bg-opacity-5 p-2 rounded-lg">
+                  <div className="bg-[#00A0E9] p-2 rounded-lg">
                     <div className="flex flex-col">
                       <span className="text-xs sm:text-sm whitespace-nowrap text-white">専門店だから低価格</span>
                       <span className="text-sm sm:text-base md:text-lg font-bold whitespace-nowrap text-white">6,600円(税込)～/㎡</span>
@@ -368,8 +378,7 @@ export default function Home() {
 
                 {/* メールとLINEボタン */}
                 <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
-                  <a href="https://nhhonpo.com/transfer/#wonder_efblock" target="_blank" rel="noopener noreferrer" 
-                     className="bg-gradient-to-b from-[#4DB5E8] via-[#00A0E9] to-[#0090D9] text-white px-3 sm:px-4 md:px-5 py-2 lg:py-2.5 rounded font-bold flex items-center gap-2 shine-effect transform hover:scale-105 transition-all duration-300 hover:brightness-110 justify-center w-full lg:w-[260px]">
+                  <a href="#contact-form" className="bg-gradient-to-b from-[#4DB5E8] via-[#00A0E9] to-[#0090D9] text-white px-3 sm:px-4 md:px-5 py-2 lg:py-2.5 rounded font-bold flex items-center gap-2 shine-effect transform hover:scale-105 transition-all duration-300 hover:brightness-110 justify-center w-full lg:w-[260px]">
                     <span className="text-lg sm:text-xl">✉</span>
                     <div className="flex flex-col">
                       <div className="flex items-center">
@@ -393,7 +402,7 @@ export default function Home() {
                       <div className="flex items-center">
                         <span className="text-sm sm:text-base font-bold">LINE相談</span>
                         <span className="text-[10px] ml-1">はこちら</span>
-                      </div>
+        </div>
                       <span className="text-[10px]">24時間受付</span>
                     </div>
                   </a>
@@ -426,7 +435,7 @@ export default function Home() {
                     </div>
                     <div className="w-24 h-24 flex-shrink-0">
                       <Image
-                        src="/images/t1.jpg"
+                        src="/images/t1.webp"
                         alt="トラブル1のイメージ"
                         width={96}
                         height={96}
@@ -449,7 +458,7 @@ export default function Home() {
                     </div>
                     <div className="w-24 h-24 flex-shrink-0">
                       <Image
-                        src="/images/trouble2.jpg"
+                        src="/images/trouble2.webp"
                         alt="トラブル2のイメージ"
                         width={96}
                         height={96}
@@ -466,7 +475,7 @@ export default function Home() {
             {/* 中央の画像 */}
             <div className="w-full lg:w-1/3 flex justify-center items-center">
               <Image
-                src="/images/trouble-center.jpg"
+                src="/images/trouble-center.webp"
                 alt="トラブル解決のイメージ"
                 width={200}
                 height={200}
@@ -482,7 +491,7 @@ export default function Home() {
                   <div className="flex items-center gap-4">
                     <div className="w-24 h-24 flex-shrink-0">
                       <Image
-                        src="/images/t3.jpg"
+                        src="/images/t3.webp"
                         alt="トラブル3のイメージ"
                         width={96}
                         height={96}
@@ -505,7 +514,7 @@ export default function Home() {
                   <div className="flex items-center gap-4">
                     <div className="w-24 h-24 flex-shrink-0">
                       <Image
-                        src="/images/t4.jpg"
+                        src="/images/t4.webp"
                         alt="トラブル4のイメージ"
                         width={96}
                         height={96}
@@ -563,7 +572,7 @@ export default function Home() {
               <div className="bg-[#E5F6FF] rounded-lg shadow-lg border-2 border-black mx-2">
                 <div className="bg-white p-6 flex justify-center items-center border-b-2 border-black">
                   <Image
-                    src="/images/logo.png"
+                    src="/images/logo.webp"
                     alt="INSPIRE Japan"
                     width={200}
                     height={50}
@@ -644,7 +653,7 @@ export default function Home() {
                 <div className="bg-[#E5F6FF] rounded-lg shadow-lg overflow-hidden w-[350px] flex-shrink-0">
                   <div className="relative h-64">
                     <Image
-                      src="/images/ex1.jpg"
+                      src="/images/ex1.webp"
                       alt="新宿区マンション施工事例"
                       fill
                       style={{ objectFit: 'cover' }}
@@ -653,7 +662,7 @@ export default function Home() {
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-2">
                       <Image
-                        src="/images/ex-icon.png"
+                        src="/images/ex-icon.webp"
                         alt="場所アイコン"
               width={20}
               height={20}
@@ -674,7 +683,7 @@ export default function Home() {
                 <div className="bg-[#E5F6FF] rounded-lg shadow-lg overflow-hidden w-[350px] flex-shrink-0">
                   <div className="relative h-64">
                     <Image
-                      src="/images/ex2.jpg"
+                      src="/images/ex2.webp"
                       alt="茨城県個人宅施工事例"
                       fill
                       style={{ objectFit: 'cover' }}
@@ -683,7 +692,7 @@ export default function Home() {
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-2">
                       <Image
-                        src="/images/ex-icon.png"
+                        src="/images/ex-icon.webp"
                         alt="場所アイコン"
                         width={20}
                         height={20}
@@ -704,7 +713,7 @@ export default function Home() {
                 <div className="bg-[#E5F6FF] rounded-lg shadow-lg overflow-hidden w-[350px] flex-shrink-0">
                   <div className="relative h-64">
                     <Image
-                      src="/images/ex3.jpg"
+                      src="/images/ex3.webp"
                       alt="東京都企業オフィス施工事例"
                       fill
                       style={{ objectFit: 'cover' }}
@@ -713,7 +722,7 @@ export default function Home() {
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-2">
                       <Image
-                        src="/images/ex-icon.png"
+                        src="/images/ex-icon.webp"
                         alt="場所アイコン"
                         width={20}
                         height={20}
@@ -734,7 +743,7 @@ export default function Home() {
                 <div className="bg-[#E5F6FF] rounded-lg shadow-lg overflow-hidden w-[350px] flex-shrink-0">
                   <div className="relative h-64">
                     <Image
-                      src="/images/ex4.jpg"
+                      src="/images/ex4.webp"
                       alt="東京都個人宅施工事例"
                       fill
                       style={{ objectFit: 'cover' }}
@@ -743,7 +752,7 @@ export default function Home() {
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-2">
                       <Image
-                        src="/images/ex-icon.png"
+                        src="/images/ex-icon.webp"
                         alt="場所アイコン"
                         width={20}
                         height={20}
@@ -764,7 +773,7 @@ export default function Home() {
                 <div className="bg-[#E5F6FF] rounded-lg shadow-lg overflow-hidden w-[350px] flex-shrink-0">
                   <div className="relative h-64">
                     <Image
-                      src="/images/ex5.jpg"
+                      src="/images/ex5.webp"
                       alt="愛知県企業オフィス施工事例"
                       fill
                       style={{ objectFit: 'cover' }}
@@ -773,7 +782,7 @@ export default function Home() {
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-2">
                       <Image
-                        src="/images/ex-icon.png"
+                        src="/images/ex-icon.webp"
                         alt="場所アイコン"
                         width={20}
                         height={20}
@@ -794,7 +803,7 @@ export default function Home() {
                 <div className="bg-[#E5F6FF] rounded-lg shadow-lg overflow-hidden w-[350px] flex-shrink-0">
                   <div className="relative h-64">
                     <Image
-                      src="/images/ex6.jpg"
+                      src="/images/ex6.webp"
                       alt="東京都店舗施工事例"
                       fill
                       style={{ objectFit: 'cover' }}
@@ -803,7 +812,7 @@ export default function Home() {
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-2">
                       <Image
-                        src="/images/ex-icon.png"
+                        src="/images/ex-icon.webp"
                         alt="場所アイコン"
                         width={20}
                         height={20}
@@ -842,7 +851,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
                 <span className="text-[#00A0E9] text-xl sm:text-2xl md:text-3xl font-bold">遮熱フィルムの貼付なら</span>
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.webp"
                   alt="INSPIRE Japan"
                   width={200}
                   height={50}
@@ -856,7 +865,7 @@ export default function Home() {
               <div className="flex items-center">
                 <div className="relative w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] md:w-[160px] md:h-[160px]">
                   <Image
-                    src="/images/cta.png"
+                    src="/images/cta.webp"
                     alt="パンダのキャラクター"
                     fill
                     className="object-contain scale-x-[-1]"
@@ -864,7 +873,7 @@ export default function Home() {
                 </div>
                 <div className="relative ml-2">
                   <div className="absolute left-[-20px] top-1/2 w-0 h-0 border-t-[10px] border-r-[20px] border-b-[10px] border-t-transparent border-r-[#00A0E9] border-b-transparent transform -translate-y-1/2"></div>
-                  <div className="bg-[#00A0E9] bg-opacity-5 p-2 rounded-lg">
+                  <div className="bg-[#00A0E9] p-2 rounded-lg">
                     <div className="flex flex-col">
                       <span className="text-xs sm:text-sm whitespace-nowrap text-white">専門店だから低価格</span>
                       <span className="text-sm sm:text-base md:text-lg font-bold whitespace-nowrap text-white">6,600円(税込)～/㎡</span>
@@ -890,8 +899,7 @@ export default function Home() {
 
                 {/* メールとLINEボタン */}
                 <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
-                  <a href="https://nhhonpo.com/transfer/#wonder_efblock" target="_blank" rel="noopener noreferrer" 
-                     className="bg-gradient-to-b from-[#4DB5E8] via-[#00A0E9] to-[#0090D9] text-white px-3 sm:px-4 md:px-5 py-2 lg:py-2.5 rounded font-bold flex items-center gap-2 shine-effect transform hover:scale-105 transition-all duration-300 hover:brightness-110 justify-center w-full lg:w-[260px]">
+                  <a href="#contact-form" className="bg-gradient-to-b from-[#4DB5E8] via-[#00A0E9] to-[#0090D9] text-white px-3 sm:px-4 md:px-5 py-2 lg:py-2.5 rounded font-bold flex items-center gap-2 shine-effect transform hover:scale-105 transition-all duration-300 hover:brightness-110 justify-center w-full lg:w-[260px]">
                     <span className="text-lg sm:text-xl">✉</span>
                     <div className="flex flex-col">
                       <div className="flex items-center">
@@ -941,7 +949,7 @@ export default function Home() {
               <div className="bg-[#00A0E9] text-white rounded-3xl p-6 max-w-md w-full">
                 <div className="text-center">
                   <h2 className="text-3xl font-bold mb-8">対応エリア</h2>
-                  <p className="text-4xl mb-8">日本全国</p>
+                  <p className="text-4xl mb-8"><strong>日本全国</strong></p>
                   <p className="text-lg mb-8">全国どこでも対応可能です。</p>
                 </div>
               </div>
@@ -951,7 +959,7 @@ export default function Home() {
             <div className="flex-1 flex justify-center">
               <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]">
           <Image
-                  src="/images/area.png"
+                  src="/images/area.webp"
                   alt="日本全国対応エリアマップ"
                   fill
                   className="object-contain"
@@ -968,7 +976,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-center mb-12">選べるお支払い</h2>
           <div className="flex justify-center">
             <Image
-              src="/images/air-pay.jpg"
+              src="/images/air-pay.webp"
               alt="お支払い方法"
               width={800}
               height={400}
@@ -993,7 +1001,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
                 <span className="text-[#00A0E9] text-xl sm:text-2xl md:text-3xl font-bold">遮熱フィルムの貼付なら</span>
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.webp"
                   alt="INSPIRE Japan"
                   width={200}
                   height={50}
@@ -1007,7 +1015,7 @@ export default function Home() {
               <div className="flex items-center">
                 <div className="relative w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] md:w-[160px] md:h-[160px]">
                   <Image
-                    src="/images/cta.png"
+                    src="/images/cta.webp"
                     alt="パンダのキャラクター"
                     fill
                     className="object-contain scale-x-[-1]"
@@ -1015,7 +1023,7 @@ export default function Home() {
                 </div>
                 <div className="relative ml-2">
                   <div className="absolute left-[-20px] top-1/2 w-0 h-0 border-t-[10px] border-r-[20px] border-b-[10px] border-t-transparent border-r-[#00A0E9] border-b-transparent transform -translate-y-1/2"></div>
-                  <div className="bg-[#00A0E9] bg-opacity-5 p-2 rounded-lg">
+                  <div className="bg-[#00A0E9] p-2 rounded-lg">
                     <div className="flex flex-col">
                       <span className="text-xs sm:text-sm whitespace-nowrap text-white">専門店だから低価格</span>
                       <span className="text-sm sm:text-base md:text-lg font-bold whitespace-nowrap text-white">6,600円(税込)～/㎡</span>
@@ -1041,8 +1049,7 @@ export default function Home() {
 
                 {/* メールとLINEボタン */}
                 <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
-                  <a href="https://nhhonpo.com/transfer/#wonder_efblock" target="_blank" rel="noopener noreferrer" 
-                     className="bg-gradient-to-b from-[#4DB5E8] via-[#00A0E9] to-[#0090D9] text-white px-3 sm:px-4 md:px-5 py-2 lg:py-2.5 rounded font-bold flex items-center gap-2 shine-effect transform hover:scale-105 transition-all duration-300 hover:brightness-110 justify-center w-full lg:w-[260px]">
+                  <a href="#contact-form" className="bg-gradient-to-b from-[#4DB5E8] via-[#00A0E9] to-[#0090D9] text-white px-3 sm:px-4 md:px-5 py-2 lg:py-2.5 rounded font-bold flex items-center gap-2 shine-effect transform hover:scale-105 transition-all duration-300 hover:brightness-110 justify-center w-full lg:w-[260px]">
                     <span className="text-lg sm:text-xl">✉</span>
                     <div className="flex flex-col">
                       <div className="flex items-center">
@@ -1085,7 +1092,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
               <div className="w-full md:w-1/3">
                 <Image
-                  src="/images/fuse.jpg"
+                  src="/images/fuse.webp"
                   alt="布施 博成"
                   width={300}
                   height={400}
@@ -1163,7 +1170,7 @@ export default function Home() {
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="flex justify-center mb-4">
                 <Image
-                  src="/images/s1.png"
+                  src="/images/s1.webp"
                   alt="問い合わせ"
                   width={100}
                   height={100}
@@ -1177,7 +1184,7 @@ export default function Home() {
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="flex justify-center mb-4">
                 <Image
-                  src="/images/s2.png"
+                  src="/images/s2.webp"
                   alt="調査と見積り"
                   width={100}
                   height={100}
@@ -1192,7 +1199,7 @@ export default function Home() {
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="flex justify-center mb-4">
                 <Image
-                  src="/images/s3.png"
+                  src="/images/s3.webp"
                   alt="ご契約"
                   width={100}
                   height={100}
@@ -1206,7 +1213,7 @@ export default function Home() {
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="flex justify-center mb-4">
                 <Image
-                  src="/images/s4.png"
+                  src="/images/s4.webp"
                   alt="作業当日"
                   width={100}
                   height={100}
@@ -1220,7 +1227,7 @@ export default function Home() {
             <div className="bg-white p-6 rounded-lg shadow">
               <div className="flex justify-center mb-4">
           <Image
-                  src="/images/s5.png"
+                  src="/images/s5.webp"
                   alt="施工終了"
                   width={100}
                   height={100}
@@ -1279,12 +1286,12 @@ export default function Home() {
       </section>
 
       {/* お問い合わせフォームセクション */}
-      <section className="py-16 bg-gray-50">
+      <section ref={contactFormRef} id="contact-form" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
             お問い合わせ
           </h2>
-          <ContactForm />
+          <ContactForm ref={formRef} />
         </div>
       </section>
 
@@ -1565,13 +1572,7 @@ export default function Home() {
 
       {/* 送信ボタン */}
       <div className="flex justify-center mb-8 bg-gray-50">
-        <button
-          type="submit"
-          form="contact-form"
-          className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition-colors text-lg font-bold"
-        >
-          送信する
-        </button>
+        <SubmitButton formRef={formRef} />
       </div>
 
       {/* フッターセクション */}
@@ -1586,7 +1587,7 @@ export default function Home() {
               </div>
               <div className="flex justify-start">
           <Image
-                  src="/images/logo.png"
+                  src="/images/logo.webp"
                   alt="INSPIRE Japanロゴ"
                   width={200}
                   height={100}
